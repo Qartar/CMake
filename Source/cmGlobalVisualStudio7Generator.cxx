@@ -349,7 +349,8 @@ void cmGlobalVisualStudio7Generator::WriteTargetConfigurations(
   for (OrderedTargetDependSet::const_iterator tt = projectTargets.begin();
        tt != projectTargets.end(); ++tt) {
     cmGeneratorTarget const* target = *tt;
-    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+        target->GetType() == cmStateEnums::OBJECT_LIBRARY) {
       continue;
     }
     const char* expath = target->GetProperty("EXTERNAL_MSPROJECT");
@@ -381,7 +382,8 @@ void cmGlobalVisualStudio7Generator::WriteTargetsToSolution(
   for (OrderedTargetDependSet::const_iterator tt = projectTargets.begin();
        tt != projectTargets.end(); ++tt) {
     cmGeneratorTarget const* target = *tt;
-    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+        target->GetType() == cmStateEnums::OBJECT_LIBRARY) {
       continue;
     }
     bool written = false;
@@ -450,7 +452,8 @@ void cmGlobalVisualStudio7Generator::WriteTargetDepends(
   for (OrderedTargetDependSet::const_iterator tt = projectTargets.begin();
        tt != projectTargets.end(); ++tt) {
     cmGeneratorTarget const* target = *tt;
-    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+    if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+        target->GetType() == cmStateEnums::OBJECT_LIBRARY) {
       continue;
     }
     const char* vcprojName = target->GetProperty("GENERATOR_FILE_NAME");

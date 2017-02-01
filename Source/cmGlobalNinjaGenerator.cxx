@@ -1029,7 +1029,8 @@ void cmGlobalNinjaGenerator::AppendTargetDepends(
     cmNinjaDeps outs;
     cmTargetDependSet const& targetDeps = this->GetTargetDirectDepends(target);
     for (cmTargetDepend const& targetDep : targetDeps) {
-      if (targetDep->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+      if (targetDep->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+          targetDep->GetType() == cmStateEnums::OBJECT_LIBRARY) {
         continue;
       }
       this->AppendTargetOutputs(targetDep, outs, depends);
@@ -1066,7 +1067,8 @@ void cmGlobalNinjaGenerator::AppendTargetDependsClosure(
     cmNinjaOuts this_outs; // this will be the new cache entry
 
     for (auto const& dep_target : targetDeps) {
-      if (dep_target->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+      if (dep_target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+          dep_target->GetType() == cmStateEnums::OBJECT_LIBRARY) {
         continue;
       }
 

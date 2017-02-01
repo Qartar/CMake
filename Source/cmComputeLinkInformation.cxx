@@ -450,6 +450,7 @@ bool cmComputeLinkInformation::Compute()
   if (!(this->Target->GetType() == cmStateEnums::EXECUTABLE ||
         this->Target->GetType() == cmStateEnums::SHARED_LIBRARY ||
         this->Target->GetType() == cmStateEnums::MODULE_LIBRARY ||
+        this->Target->GetType() == cmStateEnums::OBJECT_LIBRARY ||
         this->Target->GetType() == cmStateEnums::STATIC_LIBRARY)) {
     return false;
   }
@@ -600,7 +601,8 @@ void cmComputeLinkInformation::AddItem(std::string const& item,
       linkItem += exe;
       this->Items.push_back(Item(linkItem, true, tgt));
       this->Depends.push_back(exe);
-    } else if (tgt->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+    } else if (tgt->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+               tgt->GetType() == cmStateEnums::OBJECT_LIBRARY) {
       // Add the interface library as an item so it can be considered as part
       // of COMPATIBLE_INTERFACE_ enforcement.  The generators will ignore
       // this for the actual link line.

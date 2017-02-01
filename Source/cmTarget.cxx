@@ -738,7 +738,8 @@ void cmTarget::AddLinkLibrary(cmMakefile& mf, const std::string& lib,
   }
 
   if (cmGeneratorExpression::Find(lib) != std::string::npos ||
-      (tgt && tgt->GetType() == cmStateEnums::INTERFACE_LIBRARY) ||
+      (tgt && (tgt->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+               tgt->GetType() == cmStateEnums::OBJECT_LIBRARY)) ||
       (this->Name == lib)) {
     return;
   }

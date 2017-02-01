@@ -4274,6 +4274,7 @@ void cmGeneratorTarget::ComputeLinkInterface(
   if (iface.ExplicitLibraries) {
     if (this->GetType() == cmStateEnums::SHARED_LIBRARY ||
         this->GetType() == cmStateEnums::STATIC_LIBRARY ||
+        this->GetType() == cmStateEnums::OBJECT_LIBRARY ||
         this->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
       // Shared libraries may have runtime implementation dependencies
       // on other shared libraries that are not in the interface.
@@ -4408,8 +4409,8 @@ bool cmGeneratorTarget::UsesDefaultOutputDir(
 cmGeneratorTarget::OutputInfo const* cmGeneratorTarget::GetOutputInfo(
   const std::string& config) const
 {
-  // There is no output information for imported targets.
-  if (this->IsImported()) {
+  // There is no output information for imported targets or object libraries.
+  if (this->IsImported() || this->GetType() == cmStateEnums::OBJECT_LIBRARY) {
     return nullptr;
   }
 
@@ -5324,20 +5325,6 @@ cmGeneratorTarget* cmGeneratorTarget::FindTargetToLink(
     tgt = nullptr;
   }
 
-  if (tgt && tgt->GetType() == cmStateEnums::OBJECT_LIBRARY) {
-    std::ostringstream e;
-    e << "Target \"" << this->GetName() << "\" links to "
-                                           "OBJECT library \""
-      << tgt->GetName()
-      << "\" but this is not "
-         "allowed.  "
-         "One may link only to STATIC or SHARED libraries, or to executables "
-         "with the ENABLE_EXPORTS property set.";
-    cmake* cm = this->LocalGenerator->GetCMakeInstance();
-    cm->IssueMessage(cmake::FATAL_ERROR, e.str(), this->GetBacktrace());
-    tgt = nullptr;
-  }
-
   return tgt;
 }
 
@@ -5400,6 +5387,7 @@ bool cmGeneratorTarget::IsLinkable() const
   return (this->GetType() == cmStateEnums::STATIC_LIBRARY ||
           this->GetType() == cmStateEnums::SHARED_LIBRARY ||
           this->GetType() == cmStateEnums::MODULE_LIBRARY ||
+          this->GetType() == cmStateEnums::OBJECT_LIBRARY ||
           this->GetType() == cmStateEnums::UNKNOWN_LIBRARY ||
           this->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
           this->IsExecutableWithExports());

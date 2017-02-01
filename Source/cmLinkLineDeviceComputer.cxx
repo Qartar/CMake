@@ -40,6 +40,7 @@ std::string cmLinkLineDeviceComputer::ComputeLinkLibraries(
     switch (item.Target->GetType()) {
       case cmStateEnums::SHARED_LIBRARY:
       case cmStateEnums::MODULE_LIBRARY:
+      case cmStateEnums::OBJECT_LIBRARY:
       case cmStateEnums::INTERFACE_LIBRARY:
         skippable = true;
         break;

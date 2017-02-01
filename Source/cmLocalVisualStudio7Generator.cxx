@@ -1292,7 +1292,8 @@ void cmLocalVisualStudio7GeneratorInternals::OutputLibraries(
         lg->ConvertToRelativePath(currentBinDir, l->Value.c_str());
       fout << lg->ConvertToXMLOutputPath(rel.c_str()) << " ";
     } else if (!l->Target ||
-               l->Target->GetType() != cmStateEnums::INTERFACE_LIBRARY) {
+               (l->Target->GetType() != cmStateEnums::INTERFACE_LIBRARY &&
+                l->Target->GetType() != cmStateEnums::OBJECT_LIBRARY)) {
       fout << l->Value << " ";
     }
   }

@@ -345,7 +345,8 @@ void cmComputeLinkDepends::FollowLinkEntry(BFSEntry qe)
     if (cmLinkInterface const* iface =
           entry.Target->GetLinkInterface(this->Config, this->Target)) {
       const bool isIface =
-        entry.Target->GetType() == cmStateEnums::INTERFACE_LIBRARY;
+        entry.Target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+        entry.Target->GetType() == cmStateEnums::OBJECT_LIBRARY;
       // This target provides its own link interface information.
       this->AddLinkEntries(depender_index, iface->Libraries);
 

@@ -267,7 +267,8 @@ cmGlobalVisualStudioGenerator::GetTargetLinkClosure(cmGeneratorTarget* target)
 void cmGlobalVisualStudioGenerator::FollowLinkDepends(
   const cmGeneratorTarget* target, std::set<const cmGeneratorTarget*>& linked)
 {
-  if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY) {
+  if (target->GetType() == cmStateEnums::INTERFACE_LIBRARY ||
+      target->GetType() == cmStateEnums::OBJECT_LIBRARY) {
     return;
   }
   if (linked.insert(target).second &&
